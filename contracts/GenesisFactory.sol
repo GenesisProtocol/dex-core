@@ -1,10 +1,10 @@
 pragma solidity =0.5.16;
 
 import './interfaces/IUniswapV2Factory.sol';
-import './UniswapV2Pair.sol';
+import './GenesisPair.sol';
 
-contract UniswapV2Factory is IUniswapV2Factory {
-    bytes32 public constant INIT_CODE_PAIR_HASH = keccak256(abi.encodePacked(type(UniswapV2Pair).creationCode));
+contract GenesisFactory is IUniswapV2Factory {
+    bytes32 public constant INIT_CODE_PAIR_HASH = keccak256(abi.encodePacked(type(GenesisPair).creationCode));
 
     address public feeTo;
     address public feeToSetter;
@@ -27,7 +27,7 @@ contract UniswapV2Factory is IUniswapV2Factory {
         (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
         require(token0 != address(0), 'UniswapV2: ZERO_ADDRESS');
         require(getPair[token0][token1] == address(0), 'UniswapV2: PAIR_EXISTS'); // single check is sufficient
-        bytes memory bytecode = type(UniswapV2Pair).creationCode;
+        bytes memory bytecode = type(GenesisPair).creationCode;
         bytes32 salt = keccak256(abi.encodePacked(token0, token1));
         assembly {
             pair := create2(0, add(bytecode, 32), mload(bytecode), salt)
